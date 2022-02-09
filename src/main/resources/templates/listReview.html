@@ -1,0 +1,31 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Reviews for movies</title>
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+
+
+<h1><div th:text="${movie.name}"></div></h1>
+<a th:href="@{'/review/add/{id}' (id=${movie.getId()})}" class="edit-item" >Give a review</a>
+
+<div th:each="review: ${reviews}">
+    <div th:text="${review.description}"></div>
+    <h2><div th:text="${review.stars}"></div></h2>
+</div>
+
+
+<div>
+    <ul>
+        <li><a href="/">Home</a></li>
+    </ul>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Welcome to Movie WatchList</title>
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Movie List</h1>
+</header>
+<main>
+
+<div th:each="movie: ${movies}">
+   <div th:text="${movie.name}">
+   </div>
+
+    <form th:action="@{'movies/{id}/delete' (id=${movie.getId()})}" th:method="POST">
+        <button type="submit" class="delete-item">Delete</button>
+    </form>
+    <a th:href="@{'movies/edit/{id}' (id=${movie.getId()})}" class="edit-item" >Edit</a>
+    <a th:href="@{'review/{id}' (id=${movie.getId()})}" class="edit-item" >See Reviews</a>
+
+
+
+    <ul th:each="genre: ${movie.genres}">
+        <li th:text="${genre.name}"></li>
+    </ul>
+</div>
+
+    <a href="/add" class="add-item">
+        Add new movie
+    </a>
+
+</main>
+</body>
+</html>
