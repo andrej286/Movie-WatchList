@@ -1,0 +1,50 @@
+<header>
+
+    <div style="background-color: #4267B2" >
+
+        <nav class="navbar navbar-expand-lg navbar-light" style="color: darkorange">
+            <h3>Movie-WatchList</h3>
+
+            <div class="collapse navbar-collapse" >
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="moe nav-link pl-5" th:href="@{'/movies'}" style="color: darkorange"><h5>Home </h5><span class="sr-only">(current)</span></a>
+                    </li>
+
+
+                    <li class="nav-item dropdown">
+                        <h5>
+                            <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: darkorange">
+                                Genre
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="background-color: #4267B2">
+                                <a class="dropdown-item" style="color: darkorange" th:each="gen: ${genres}" th:href="@{'/movies/{genre}' (genre=${gen.name}) }" th:text="${gen.getName()}" th:value="${gen.getId()}" ></a>
+                            </div>
+                        </h5>
+                    </li>
+                </ul>
+
+
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search a movie" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="color: darkorange">Search</button>
+                </form>
+
+                <a th:if="${#request.getRemoteUser() == null}"  class="btn btn-light ml-2" href="/logout" style="background-color: #1E90FF;border-color: #1E90FF">
+                    <i class="fa fa-shopping-cart"></i> Login
+                </a>
+
+                <a th:if="${#request.getRemoteUser() != null}"  class="btn btn-light ml-2" href="/logout" style="background-color: #1E90FF;border-color: #1E90FF">
+                    <i class="fa fa-shopping-cart"></i> Logout
+                </a>
+
+
+                <th:block th:if="${#request.getRemoteUser() != null}" th:text="${#request.getRemoteUser()}"></th:block>
+
+            </div>
+        </nav>
+
+
+
+
+</header>

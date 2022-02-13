@@ -26,15 +26,30 @@ public class MovieController {
     }
 
     @GetMapping
-    public String getMoviePage(@RequestParam(required = false) String error, Model model) {
+    public String getMoviePage(@RequestParam(required = false) String error,
+                               Model model) {
+//        movieService.updateScore();
         model.addAttribute("movies", movieService.findAll());
-        return "listMovies";
+        model.addAttribute("genres" , this.genreService.findAll());
+        model.addAttribute("bodyContent","listMovies");
+        return "master-template";
+    }
+
+    @GetMapping("/movies/{genre}")
+    public String getMoviePageWithGenre(@PathVariable String genre,
+                                        @RequestParam(required = false) String error,
+                                         Model model) {
+        model.addAttribute("movies", movieService.listMoviesByGenre(genre));
+        model.addAttribute("genres" , this.genreService.findAll());
+        model.addAttribute("bodyContent","listMovies");
+        return "master-template";
     }
 
     @GetMapping("/add")
     public String showAdd(Model model) {
         model.addAttribute("genres" , this.genreService.findAll());
-        return "addMovie";
+        model.addAttribute("bodyContent","addMovie");
+        return "master-template";
     }
 
     @PostMapping("/")
@@ -53,7 +68,8 @@ public class MovieController {
     public String showEdit(@PathVariable Long id, Model model) {
         model.addAttribute("movie", this.movieService.findById(id).get());
         model.addAttribute("genres" , this.genreService.findAll());
-        return "addMovie";
+        model.addAttribute("bodyContent","addMovie");
+        return "master-template";
     }
 
     @PostMapping("/{id}")
@@ -69,6 +85,14 @@ public class MovieController {
     @PostMapping("/{id}/delete")
     @Transactional
     public String delete(@PathVariable Long id,
+                         Model model) {
+        this.movieService.delete(id);
+        return "redirect:/movies";
+    }
+
+    @PostMapping("/{id}/addToList")
+    @Transactional
+    public String addList(@PathVariable Long id,
                          Model model) {
         this.movieService.delete(id);
         return "redirect:/movies";

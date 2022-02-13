@@ -14,4 +14,6 @@ public interface MovieService {
     void delete(Long id);
     Movie update(Long id, String name,String description, List<Long> genres);
     List<Movie> listMoviesByName(String name);
+    List<Movie> listMoviesByGenre(String name);
+//    void updateScore();
 }

@@ -60,5 +60,17 @@ public class MovieServiceImpl implements MovieService {
         return this.findAll(); //todo: implement search filter
     }
 
+    @Override
+    public List<Movie> listMoviesByGenre(String genreName) {
+        Genre genre = genreRepository.findByName(genreName);
+        return movieRepository.findAllByGenresContaining(genre);
+    }
+
+//    @Override
+//    public void updateScore() {
+//        movieRepository.findAll().stream().filter(i->i.getReviews()!=null).forEach(i->{
+//            i.setScore(i.getReviews().stream().mapToDouble(j-> j.getStars()).average().getAsDouble());});
+//    }
+
 
 }
