@@ -9,27 +9,27 @@ import java.util.List;
 @Entity
 public class Movie {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    private String name;
+  private String name;
 
-    @Column(length = 4000)
-    private String description;
+  @Column(length = 4000)
+  private String description;
 
-    @Enumerated(value = EnumType.STRING)
-    private Genre genre;
+  @Enumerated(value = EnumType.STRING)
+  private Genre genre;
 
-    double score;
+  double score;
 
-    public Movie(String name, String description,Genre genre) {
-        this.name = name;
-        this.description = description;
-        this.genre=genre;
-        this.score = 0.0;
-    }
+  public Movie(String name, String description, Genre genre) {
+    this.name = name;
+    this.description = description;
+    this.genre = genre;
+    this.score = 0.0;
+  }
 
-    public Movie() {
-    }
+  public Movie() {
+  }
 }

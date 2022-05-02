@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Long>{
-
+    void deleteByName(String name);
 //        List<Movie> findAllByGenresContaining(Genre genre);
 }
 
