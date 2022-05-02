@@ -18,6 +18,7 @@ public class Movie {
     @Column(length = 4000)
     private String description;
 
+    @Enumerated(value = EnumType.STRING)
     private Genre genre;
 
     double score;
