@@ -15,17 +15,18 @@ public class WatchList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private User user;
+//    @ManyToOne
+//    private User user;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.DETACH)
     private List<Movie> movies;
 
-    public WatchList(User user) {
-        this.user = user;
-        this.movies = new ArrayList<>();
-    }
+//    public WatchList(User user) {
+//        this.user = user;
+//        this.movies = new ArrayList<>();
+//    }
 
     public WatchList() {
+        this.movies = new ArrayList<>();
     }
 }

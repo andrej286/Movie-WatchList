@@ -1,26 +1,26 @@
 package mk.ukim.finki.moviewatchlist.service.Impl;
 
+import lombok.RequiredArgsConstructor;
 import mk.ukim.finki.moviewatchlist.model.Genre;
 import mk.ukim.finki.moviewatchlist.model.Movie;
 import mk.ukim.finki.moviewatchlist.model.dto.MovieDto;
 import mk.ukim.finki.moviewatchlist.repository.MovieRepository;
+import mk.ukim.finki.moviewatchlist.repository.ReviewRepository;
 import mk.ukim.finki.moviewatchlist.service.MovieService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class MovieServiceImpl implements MovieService {
 
 
   private final MovieRepository movieRepository;
-
-  public MovieServiceImpl(MovieRepository movieRepository) {
-    this.movieRepository = movieRepository;
-  }
-
+  private final ReviewRepository reviewRepository;
 
   @Override
   public List<Movie> findAll() {
@@ -52,7 +52,10 @@ public class MovieServiceImpl implements MovieService {
   }
 
   @Override
+  @Transactional
   public void delete(Long id) {
+
+    this.reviewRepository.deleteAllByMovie(this.movieRepository.getById(id));
 
     this.movieRepository.deleteById(id);
   }
