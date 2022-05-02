@@ -23,10 +23,6 @@ public class Movie {
 
     double score;
 
-//    @OneToMany(mappedBy = "movie")
-    @OneToMany(mappedBy = "movie",cascade = CascadeType.ALL, fetch=FetchType.EAGER, orphanRemoval=true)
-    private List<Review> reviews;
-
     public Movie(String name, String description,Genre genre) {
         this.name = name;
         this.description = description;
