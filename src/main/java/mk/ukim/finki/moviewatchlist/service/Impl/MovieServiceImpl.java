@@ -2,7 +2,6 @@ package mk.ukim.finki.moviewatchlist.service.Impl;
 
 import mk.ukim.finki.moviewatchlist.model.Genre;
 import mk.ukim.finki.moviewatchlist.model.Movie;
-import mk.ukim.finki.moviewatchlist.repository.GenreRepository;
 import mk.ukim.finki.moviewatchlist.repository.MovieRepository;
 import mk.ukim.finki.moviewatchlist.service.MovieService;
 import org.springframework.stereotype.Service;
@@ -16,11 +15,9 @@ public class MovieServiceImpl implements MovieService {
 
 
     private final MovieRepository movieRepository;
-    private final GenreRepository genreRepository;
 
-    public MovieServiceImpl(MovieRepository movieRepository, GenreRepository genreRepository) {
+    public MovieServiceImpl(MovieRepository movieRepository) {
         this.movieRepository = movieRepository;
-        this.genreRepository = genreRepository;
     }
 
 
@@ -35,8 +32,8 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public Movie save(String name, String description,List<Genre> genres) {
-       return movieRepository.save(new Movie(name,description,genres));
+    public Movie save(String name, String description, Genre genre) {
+       return movieRepository.save(new Movie(name,description,genre));
     }
 
     @Override
@@ -45,13 +42,11 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public Movie update(Long id, String name, String description, List<Long> genres) {
+    public Movie update(Long id, String name, String description, Genre genre) {
         Movie movie = this.findById(id).get(); //todo: add exception
         movie.setDescription(description);
         movie.setName(name);
-        List<Genre> genres1 = new ArrayList<>();
-        genres.stream().forEach(i->genres1.add(genreRepository.findById(i).get()));
-        movie.setGenres(genres1);
+        movie.setGenre(genre);
         return this.movieRepository.save(movie);
     }
 
@@ -60,11 +55,11 @@ public class MovieServiceImpl implements MovieService {
         return this.findAll(); //todo: implement search filter
     }
 
-    @Override
-    public List<Movie> listMoviesByGenre(String genreName) {
-        Genre genre = genreRepository.findByName(genreName);
-        return movieRepository.findAllByGenresContaining(genre);
-    }
+//    @Override
+//    public List<Movie> listMoviesByGenre(String genreName) {
+//        Genre genre = genreRepository.findByName(genreName);
+//        return movieRepository.findAllByGenresContaining(genre);
+//    }
 
 //    @Override
 //    public void updateScore() {

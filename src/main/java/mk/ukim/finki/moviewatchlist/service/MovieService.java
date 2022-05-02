@@ -10,10 +10,10 @@ public interface MovieService {
 
     List<Movie> findAll();
     Optional<Movie> findById(Long id);
-    Movie save(String name,String description,List<Genre> genres);
+    Movie save(String name, String description, Genre genre);
     void delete(Long id);
-    Movie update(Long id, String name,String description, List<Long> genres);
+    Movie update(Long id, String name,String description, Genre genre);
     List<Movie> listMoviesByName(String name);
-    List<Movie> listMoviesByGenre(String name);
+//    List<Movie> listMoviesByGenre(String name);
 //    void updateScore();
 }

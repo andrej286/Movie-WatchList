@@ -1,6 +1,5 @@
 package mk.ukim.finki.moviewatchlist.service;
 
-import mk.ukim.finki.moviewatchlist.model.Genre;
 import mk.ukim.finki.moviewatchlist.model.Movie;
 import mk.ukim.finki.moviewatchlist.model.Review;
 

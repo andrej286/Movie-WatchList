@@ -18,8 +18,7 @@ public class Movie {
     @Column(length = 4000)
     private String description;
 
-    @ManyToMany
-    private List<Genre> genres;
+    private Genre genre;
 
     double score;
 
@@ -27,10 +26,10 @@ public class Movie {
     @OneToMany(mappedBy = "movie",cascade = CascadeType.ALL, fetch=FetchType.EAGER, orphanRemoval=true)
     private List<Review> reviews;
 
-    public Movie(String name, String description,List<Genre> genres) {
+    public Movie(String name, String description,Genre genre) {
         this.name = name;
         this.description = description;
-        this.genres=genres;
+        this.genre=genre;
         this.score = 0.0;
     }
 
