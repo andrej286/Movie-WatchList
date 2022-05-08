@@ -4,8 +4,11 @@ package mk.ukim.finki.moviewatchlist.web.rest;
 import lombok.RequiredArgsConstructor;
 import mk.ukim.finki.moviewatchlist.model.Genre;
 import mk.ukim.finki.moviewatchlist.model.Movie;
+import mk.ukim.finki.moviewatchlist.model.Review;
 import mk.ukim.finki.moviewatchlist.model.dto.MovieDto;
+import mk.ukim.finki.moviewatchlist.model.dto.ReviewDto;
 import mk.ukim.finki.moviewatchlist.service.MovieService;
+import mk.ukim.finki.moviewatchlist.service.ReviewService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,10 +23,16 @@ import java.util.List;
 public class MovieRestController {
 
   private final MovieService movieService;
+  private final ReviewService reviewService;
 
   @GetMapping
   public List<Movie> findAll() {
     return this.movieService.findAll();
+  }
+
+  @GetMapping("/reviews")
+  public List<Review> findReviews() {
+    return this.reviewService.findAll();
   }
 
   @GetMapping("/genres")
@@ -51,6 +60,15 @@ public class MovieRestController {
             .map(book -> ResponseEntity.ok().body(book))
             .orElseGet(() -> ResponseEntity.badRequest().build());
   }
+
+  @PostMapping("reviews/add")
+  public ResponseEntity<Review> save(@RequestBody ReviewDto reviewDto) {
+
+    return this.reviewService.save(reviewDto)
+            .map(book -> ResponseEntity.ok().body(book))
+            .orElseGet(() -> ResponseEntity.badRequest().build());
+  }
+
 
   @PutMapping("/edit/{id}")
   public ResponseEntity<Movie> save(@PathVariable Long id, @RequestBody MovieDto movieDto) {
