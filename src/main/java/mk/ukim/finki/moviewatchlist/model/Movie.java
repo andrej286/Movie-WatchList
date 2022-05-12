@@ -23,11 +23,15 @@ public class Movie {
 
   double score;
 
-  public Movie(String name, String description, Genre genre) {
+  @Column(length = 20000)
+  private String movieImg;
+
+  public Movie(String name, String description, Genre genre, String movieImg) {
     this.name = name;
     this.description = description;
     this.genre = genre;
     this.score = 0.0;
+    this.movieImg = movieImg;
   }
 
   public Movie() {

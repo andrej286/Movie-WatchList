@@ -34,9 +34,9 @@ public class MovieServiceImpl implements MovieService {
   }
 
   @Override
-  public Optional<Movie> save(String name, String description, Genre genre) {
+  public Optional<Movie> save(String name, String description, Genre genre, String movieImg) {
 
-    return Optional.of(this.movieRepository.save(new Movie(name, description, genre)));
+    return Optional.of(this.movieRepository.save(new Movie(name, description, genre, movieImg)));
   }
 
   @Override
@@ -44,7 +44,7 @@ public class MovieServiceImpl implements MovieService {
 
     this.movieRepository.deleteByName(movieDto.getName());
 
-    Movie movie = new Movie(movieDto.getName(), movieDto.getDescription(), Genre.valueOf(movieDto.getGenre()));
+    Movie movie = new Movie(movieDto.getName(), movieDto.getDescription(), Genre.valueOf(movieDto.getGenre()), movieDto.getMovieImg());
 
     this.movieRepository.save(movie);
 
@@ -61,13 +61,14 @@ public class MovieServiceImpl implements MovieService {
   }
 
   @Override
-  public Optional<Movie> update(Long id, String name, String description, Genre genre) {
+  public Optional<Movie> update(Long id, String name, String description, Genre genre, String movieImg) {
 
     Movie movie = this.movieRepository.findById(id).get();
 
     movie.setName(name);
     movie.setDescription(description);
     movie.setGenre(genre);
+    movie.setMovieImg(movieImg);
 
     return Optional.of(this.movieRepository.save(movie));
   }
@@ -80,6 +81,7 @@ public class MovieServiceImpl implements MovieService {
     movie.setName(movieDto.getName());
     movie.setDescription(movieDto.getDescription());
     movie.setGenre(Genre.valueOf(movieDto.getGenre()));
+    movie.setMovieImg(movieDto.getMovieImg());
 
     this.movieRepository.save(movie);
 

@@ -5,11 +5,9 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class MovieDto {
+public class ReviewDto {
 
-  private String name;
+  private Integer stars;
   private String description;
-  private String genre;
-  private double score;
-  private String movieImg;
+  private Long movie;
 }

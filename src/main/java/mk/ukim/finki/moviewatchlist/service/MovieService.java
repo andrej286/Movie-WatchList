@@ -13,13 +13,13 @@ public interface MovieService {
 
   Optional<Movie> findById(Long id);
 
-  Optional<Movie> save(String name, String description, Genre genre);
+  Optional<Movie> save(String name, String description, Genre genre, String movieImg);
 
   Optional<Movie> save(MovieDto movieDto);
 
   void delete(Long id);
 
-  Optional<Movie> update(Long id, String name, String description, Genre genre);
+  Optional<Movie> update(Long id, String name, String description, Genre genre, String movieImg);
 
   Optional<Movie> update(Long id, MovieDto movieDto);
 }
