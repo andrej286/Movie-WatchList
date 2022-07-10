@@ -11,8 +11,6 @@ public interface ReviewService {
 
   List<Review> findAll();
 
-  List<Review> findAllForMovie(Long movieId);
-
   Review save(Integer stars, String description, Movie movie);
 
   Optional<Review> findById(Long id);

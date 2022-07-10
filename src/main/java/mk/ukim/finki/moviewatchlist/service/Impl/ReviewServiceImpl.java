@@ -1,9 +1,10 @@
 package mk.ukim.finki.moviewatchlist.service.Impl;
 
+import lombok.RequiredArgsConstructor;
+import mk.ukim.finki.moviewatchlist.mapper.ReviewMapper;
 import mk.ukim.finki.moviewatchlist.model.Movie;
 import mk.ukim.finki.moviewatchlist.model.Review;
 import mk.ukim.finki.moviewatchlist.model.dto.ReviewDto;
-import mk.ukim.finki.moviewatchlist.repository.MovieRepository;
 import mk.ukim.finki.moviewatchlist.repository.ReviewRepository;
 import mk.ukim.finki.moviewatchlist.service.ReviewService;
 import org.springframework.stereotype.Service;
@@ -12,27 +13,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
 
   private final ReviewRepository reviewRepository;
-  private final MovieRepository movieRepository;
-
-  public ReviewServiceImpl(ReviewRepository reviewRepository, MovieRepository movieRepository) {
-    this.reviewRepository = reviewRepository;
-    this.movieRepository = movieRepository;
-  }
+  private final ReviewMapper reviewMapper;
 
   @Override
   public List<Review> findAll() {
     return this.reviewRepository.findAll();
-  }
-
-  @Override
-  public List<Review> findAllForMovie(Long movieId) {
-
-    Movie movie = this.movieRepository.findById(movieId).get();
-
-    return this.reviewRepository.findByMovie(movie);
   }
 
   @Override
@@ -49,9 +38,7 @@ public class ReviewServiceImpl implements ReviewService {
   @Override
   public Optional<Review> save(ReviewDto reviewDto) {
 
-    Movie movie = movieRepository.findById(reviewDto.getMovie()).get();
-
-    Review review = new Review(reviewDto.getStars(), reviewDto.getDescription(), movie);
+    Review review = reviewMapper.mapToReview(reviewDto);
 
     this.reviewRepository.save(review);
 
