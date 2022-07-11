@@ -12,6 +12,7 @@ import mk.ukim.finki.moviewatchlist.service.ReviewService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,16 +24,10 @@ import java.util.List;
 public class MovieRestController {
 
   private final MovieService movieService;
-  private final ReviewService reviewService;
 
   @GetMapping
   public List<Movie> findAll() {
     return this.movieService.findAll();
-  }
-
-  @GetMapping("/reviews")
-  public List<Review> findReviews() {
-    return this.reviewService.findAll();
   }
 
   @GetMapping("/genres")
@@ -54,24 +49,15 @@ public class MovieRestController {
   }
 
   @PostMapping("/add")
-  public ResponseEntity<Movie> save(@RequestBody MovieDto movieDto) {
+  public ResponseEntity<Movie> save(@Valid @RequestBody MovieDto movieDto) {
 
     return this.movieService.save(movieDto)
             .map(book -> ResponseEntity.ok().body(book))
             .orElseGet(() -> ResponseEntity.badRequest().build());
   }
 
-  @PostMapping("reviews/add")
-  public ResponseEntity<Review> save(@RequestBody ReviewDto reviewDto) {
-
-    return this.reviewService.save(reviewDto)
-            .map(book -> ResponseEntity.ok().body(book))
-            .orElseGet(() -> ResponseEntity.badRequest().build());
-  }
-
-
   @PutMapping("/edit/{id}")
-  public ResponseEntity<Movie> save(@PathVariable Long id, @RequestBody MovieDto movieDto) {
+  public ResponseEntity<Movie> save(@PathVariable Long id, @Valid @RequestBody MovieDto movieDto) {
 
     return this.movieService.update(id, movieDto)
             .map(book -> ResponseEntity.ok().body(book))
@@ -82,7 +68,9 @@ public class MovieRestController {
   public ResponseEntity deleteById(@PathVariable Long id) {
 
     this.movieService.delete(id);
+
     if (this.movieService.findById(id).isEmpty()) return ResponseEntity.ok().build();
+
     return ResponseEntity.badRequest().build();
   }
 }
