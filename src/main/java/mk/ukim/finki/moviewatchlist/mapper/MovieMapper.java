@@ -11,10 +11,11 @@ public class MovieMapper {
   public Movie mapToMovie(MovieDto movieDto){
 
     Movie movie = new Movie();
-
+    // TODO: 7/12/2022 check to see if adding setScore to Movie will break something
     movie.setName(movieDto.getName());
     movie.setDescription(movieDto.getDescription());
     movie.setGenre(Genre.valueOf(movieDto.getGenre()));
+    movie.setScore(movieDto.getScore());
     movie.setMovieImg(movieDto.getMovieImg());
 
     return movie;
