@@ -1,5 +1,12 @@
 package mk.ukim.finki.moviewatchlist.model;
 
 public enum Genre {
-    ACTION,ROMANCE,COMEDY
+    ACTION,
+    COMEDY,
+    DRAMA,
+    HORROR,
+    ROMANCE,
+    SCIENCE_FICTION,
+    THRILLER,
+    OTHER
 }

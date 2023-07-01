@@ -53,6 +53,14 @@ public class MovieServiceImpl implements MovieService {
   }
 
   @Override
+  public Optional<Movie> save(Movie movie) {
+
+    this.movieRepository.save(movie);
+
+    return Optional.of(movie);
+  }
+
+  @Override
   @Transactional
   public void delete(Long id) {
 
