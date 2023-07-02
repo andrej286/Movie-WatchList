@@ -40,13 +40,17 @@ public class DataHolder {
             "PREFIX dbo: <http://dbpedia.org/ontology/>\n" +
             "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
             "PREFIX dbr: <http://dbpedia.org/resource/>\n" +
-            "SELECT DISTINCT ?movie ?description ?image ?genre WHERE { " +
+            "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n" +
+            "SELECT ?movie ?description ?image ?genre WHERE { " +
             "?movie rdf:type dbo:Film . " +
             "?movie rdfs:comment ?description . " +
+            "?movie dbo:releaseDate ?date . " +
             "OPTIONAL { ?movie dbo:thumbnail ?image . } " +
             "OPTIONAL { ?movie dbo:genre ?genreResource . ?genreResource rdfs:label ?genre . FILTER (LANG(?genre) = 'en') } " +
-            "FILTER (LANG(?description) = 'en') " +
-            "} LIMIT 100";
+            "FILTER (LANG(?description) = 'en' && ?date > '2015-01-01'^^xsd:date) " +
+            "} " +
+            "GROUP BY ?movie ?description ?image ?genre " +
+            "LIMIT 100";
 
 
     // DBpedia endpoint
