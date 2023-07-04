@@ -9,7 +9,6 @@ import mk.ukim.finki.moviewatchlist.service.MovieService;
 import mk.ukim.finki.moviewatchlist.service.ReviewService;
 import org.apache.jena.query.*;
 import org.apache.jena.rdf.model.*;
-import org.apache.jena.vocabulary.RDF;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -30,40 +29,35 @@ public class DataHolder {
   private final MovieService movieService;
   private final ReviewService reviewService;
 
+  private static final String SPARQL_QUERY = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
+          "PREFIX dbo: <http://dbpedia.org/ontology/>\n" +
+          "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
+          "PREFIX dbr: <http://dbpedia.org/resource/>\n" +
+          "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n" +
+          "SELECT ?movie ?description ?image ?genre WHERE { " +
+          "?movie rdf:type dbo:Film . " +
+          "?movie rdfs:comment ?description . " +
+          "?movie dbo:releaseDate ?date . " +
+          "OPTIONAL { ?movie dbo:thumbnail ?image . } " +
+          "OPTIONAL { ?movie dbo:genre ?genreResource . ?genreResource rdfs:label ?genre . FILTER (LANG(?genre) = 'en') } " +
+          "FILTER (LANG(?description) = 'en' && ?date > '2015-01-01'^^xsd:date) " +
+          "} " +
+          "GROUP BY ?movie ?description ?image ?genre " +
+          "LIMIT 100";
+
   @PostConstruct
   public void initData() throws IOException {
 
     List<Movie> movies = new ArrayList<>();
 
-    // SPARQL query to retrieve movie names
-    String sparqlQuery = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
-            "PREFIX dbo: <http://dbpedia.org/ontology/>\n" +
-            "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n" +
-            "PREFIX dbr: <http://dbpedia.org/resource/>\n" +
-            "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n" +
-            "SELECT ?movie ?description ?image ?genre WHERE { " +
-            "?movie rdf:type dbo:Film . " +
-            "?movie rdfs:comment ?description . " +
-            "?movie dbo:releaseDate ?date . " +
-            "OPTIONAL { ?movie dbo:thumbnail ?image . } " +
-            "OPTIONAL { ?movie dbo:genre ?genreResource . ?genreResource rdfs:label ?genre . FILTER (LANG(?genre) = 'en') } " +
-            "FILTER (LANG(?description) = 'en' && ?date > '2015-01-01'^^xsd:date) " +
-            "} " +
-            "GROUP BY ?movie ?description ?image ?genre " +
-            "LIMIT 100";
-
-
-    // DBpedia endpoint
     String dbpediaEndpoint = "http://dbpedia.org/sparql";
 
-    // Creating the query object
-    Query query = QueryFactory.create(sparqlQuery);
+    Query query = QueryFactory.create(SPARQL_QUERY);
 
     try (QueryExecution queryExec = QueryExecutionFactory.sparqlService(dbpediaEndpoint, query)) {
-      // Executing the query and obtaining the results
+
       ResultSet resultSet = queryExec.execSelect();
 
-      // Iterating over the results and printing the movie name and description
       while (resultSet.hasNext()) {
         QuerySolution solution = resultSet.nextSolution();
         Resource movieResource = solution.getResource("movie");
@@ -98,6 +92,7 @@ public class DataHolder {
   }
 
   private static String getWikipediaImage(String movieName) {
+
     String wikipediaUrl = "https://en.wikipedia.org/wiki/" + movieName.replace(" ", "_");
 
     try {
@@ -119,6 +114,7 @@ public class DataHolder {
   }
 
   private static Genre mapGenre(String genreString) {
+
     if (genreString != null) {
       String normalizedGenre = genreString.toUpperCase().replaceAll("\\s+", "_");
       try {
