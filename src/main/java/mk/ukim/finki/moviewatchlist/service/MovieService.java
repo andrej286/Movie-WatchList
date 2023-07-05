@@ -17,6 +17,8 @@ public interface MovieService {
 
   Optional<Movie> save(MovieDto movieDto);
 
+  Optional<Movie> save(Movie movie);
+
   void delete(Long id);
 
   Optional<Movie> update(Long id, String name, String description, Genre genre, String movieImg);
